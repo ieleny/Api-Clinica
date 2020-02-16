@@ -1,6 +1,5 @@
 import * as express from 'express';
-import { HorariosController} from './controller/HorariosController';
-import { HorariosModel } from './model/HorariosModel';
+import { HorariosController } from './controller/HorariosController';
 
 const app = express();
 const horariosController = new HorariosController();
@@ -28,8 +27,8 @@ app.get('/listar-regras-horarios', (request, response) => {
     response.send(horariosController.listarHorarios());
 });
 
-app.get('/listar-horarios-disponiveis', (request, response) => {
-    response.send('Hello world!');
+app.post('/listar-horarios-disponiveis', (req, res) => {
+     res.send(horariosController.verificarDataDisponivel(req.query.diaInicio, req.query.DataFim));
 });
  
 app.listen(8080);

@@ -24,3 +24,4 @@ Salvar em aquivo JSON
     -- Verificar se a data tem 10 numeros
     -- Fazer um loop para periocidade
     -- Para apagar será passado um id
+    -- Para informar os horarios disponiveis no precisa informar o intervalo com duas data

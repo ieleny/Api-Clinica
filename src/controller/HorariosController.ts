@@ -86,8 +86,29 @@ export class HorariosController
     }
 
     //Retornar Lista de Horarios
-    verificarHoraExiste()
+    verificarDataDisponivel(dataInicio: string , dataFim: string)
     {
+
+        let dados     = this.listarHorarios();
+        let mensagem  ;
+
+        if(!dados.hasOwnProperty('mensagem')){
+
+
+            //Fazer mapeamento da data
+            for (let objeto of dados.horarios) {
+
+                if(objeto.dia == dataInicio || objeto.dia == dataFim ){
+                    return dados.horarios;
+                }
+
+            }
+
+        }else{
+
+            return mensagem  = {"mensagem" : "Não Tem Dados Salvo no Json"};
+
+        }
 
 
 
