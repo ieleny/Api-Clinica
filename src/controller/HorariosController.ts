@@ -33,15 +33,27 @@ export class HorariosController
     apagarHorarios(id : number)
     {
         let dados     = this.listarHorarios();
-        let mensagem  = {"mensagem" : "Não foi encontrado o index requisito"};
-        
-        for (let index of dados.horarios) {
+        let mensagem  = {"mensagem" : "Não foi encontrado o index requisitado"};
 
-            if(index.id == id){
-                dados.horarios.splice(id, 1);
-                mensagem = {"mensagem" : `O id ${id} foi deletado com sucesso`};
+        if(!dados.hasOwnProperty('mensagem')){
+
+            //Apagar os dados
+            for (let objeto of dados.horarios) {
+
+                if(objeto.id == id){
+                    mensagem = {"mensagem" : `O dia ${objeto.dia} foi deletado com sucesso`};
+                    dados.horarios.splice(id, 1);
+                }
+
             }
 
+            //Organizar o ID
+            for (var _i = 0; _i < dados.horarios.length; _i++) {
+                dados.horarios[_i].id = _i;
+            }
+
+        }else{
+            mensagem  = {"mensagem" : "O arquivo está vazio, por favor insira um horario"};
         }
 
         return this.HorariosModel.cadastrarHorarios(JSON.stringify(dados)) ? mensagem  : "Não foi possivel Deletar"; 
