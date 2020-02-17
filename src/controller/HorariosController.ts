@@ -69,7 +69,7 @@ export class HorariosController {
   }
 
   //Quantidade de regas de horas cadastra
-  verificaQuantidadeRegras(): number {
+  verificaQuantidadeHorarios(): number {
 
     let dados = this.listarHorarios();
 
@@ -129,6 +129,7 @@ export class HorariosController {
       return { "erro": "Data invalida, Modelo a ser utilizado .: 12-06-2020 " };
     }
 
+    //Verificar se a data está no formato correto
     if (this.Funcoes.verificarHora(campos[2]) === false) {
       return { "erro": "A hora Inicio está inválida. Modelo a ser utilizado .: 15:30" };
     } else if (this.Funcoes.verificarHora(campos[3]) === false) {
@@ -138,7 +139,7 @@ export class HorariosController {
       return this.cadastrarHorarios(
 
         {
-          "id": this.verificaQuantidadeRegras(),
+          "id": this.verificaQuantidadeHorarios(),
           "dia": this.Funcoes.padronizarData(campos[0]),
           "periocidade": campos[1],
           "hora": [
@@ -155,7 +156,10 @@ export class HorariosController {
 
   }
 
+  //Verificar se existe a hora irá chocar com a cadastrada
+  verificarPeriodoDeHora() {
 
+  }
 
 
 

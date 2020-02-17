@@ -34,5 +34,12 @@ Salvar em aquivo JSON
                 20/02/2020 21/02/2020  22/02/2020
         -- Saber qual a maior data
 
-// Validar data 
+// Validar Horas
+
+        -- Primeiro verifica se já existe a data cadastrada
+        -- Depois verificar se o horario irá chocar 
+                ex: inicio: "12:39" e Fim: 10:46
+                        Para não chocar terá que ser : <= 12:39 e >= 10:46     
+
+// Criar Base da periocidade
         

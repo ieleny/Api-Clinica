@@ -1,11 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const HorariosModel_1 = require("../model/HorariosModel");
+const Funcoes_1 = require("../require/Funcoes");
 const dayjs = require("dayjs");
 class HorariosController {
     constructor() {
         //Model
         this.HorariosModel = new HorariosModel_1.HorariosModel();
+        this.Funcoes = new Funcoes_1.Funcoes();
     }
     //Cadastrar Horarios
     cadastrarHorarios(horario) {
@@ -68,11 +70,11 @@ class HorariosController {
         let dados = this.listarHorarios();
         let datasRange = [], periodos = [];
         if (!dados.hasOwnProperty('mensagem')) {
-            let quantidade = dayjs(this.padronizarData(dataFim))
-                .diff(dayjs(this.padronizarData(dataInicio)), 'day');
+            let quantidade = dayjs(this.Funcoes.padronizarData(dataFim))
+                .diff(dayjs(this.Funcoes.padronizarData(dataInicio)), 'day');
             //Criar um range de datas
             for (let i = 0; i <= quantidade; i++) {
-                datasRange[i] = dayjs(this.padronizarData(dataInicio)).add(i, 'day').format("YYYY-MM-DD");
+                datasRange[i] = dayjs(this.Funcoes.padronizarData(dataInicio)).add(i, 'day').format("YYYY-MM-DD");
             }
             //verificar se existe em ambos array
             for (let objeto of dados.horarios) {
@@ -97,51 +99,31 @@ class HorariosController {
     //Verfica se as data são validas
     validaCampos(campos) {
         //verificar se é um dia valido
-        if (this.verificarData(campos[0]) === false) {
+        if (this.Funcoes.verificarData(campos[0]) === false) {
             return { "erro": "Data invalida, Modelo a ser utilizado .: 12-06-2020 " };
         }
-        if (this.verificarHora(campos[2]) === false) {
+        if (this.Funcoes.verificarHora(campos[2]) === false) {
             return { "erro": "A hora Inicio está inválida. Modelo a ser utilizado .: 15:30" };
         }
-        else if (this.verificarHora(campos[3]) === false) {
+        else if (this.Funcoes.verificarHora(campos[3]) === false) {
             return { "erro": "A hora Fim está inválida. Modelo a ser utilizado .: 15:30" };
         }
-        else if (typeof this.verificarHora(campos[3]) == "string" && typeof this.verificarHora(campos[3]) == "string") {
+        else if (typeof this.Funcoes.verificarHora(campos[3]) == "string" && typeof this.Funcoes.verificarHora(campos[3]) == "string") {
             return this.cadastrarHorarios({
                 "id": this.verificaQuantidadeRegras(),
-                "dia": this.padronizarData(campos[0]),
+                "dia": this.Funcoes.padronizarData(campos[0]),
                 "periocidade": campos[1],
-                "horaInicio": this.verificarHora(campos[2]),
-                "horaFim": this.verificarHora(campos[3])
+                "hora": [
+                    {
+                        "inicio": this.Funcoes.verificarHora(campos[2]),
+                        "Fim": this.Funcoes.verificarHora(campos[3])
+                    }
+                ]
             });
         }
     }
-    //Verifica se é uma data valida
-    verificarData(data) {
-        return /^[0-9]{2}-[0-9]{2}-[0-9]{4}$/.test(data);
-    }
-    //Corrigir a data para ficar no padrão ANO/MES/DIA
-    padronizarData(data) {
-        return data.substr(6, 4) + "-" + data.substr(3, 2) + "-" + data.substr(0, 2);
-    }
-    //Fazer uma função com expressão regular para verificar se a cada dois numeros tem :
-    verificarHora(hora) {
-        let horaPadrao;
-        let tamanho = hora.length;
-        switch (tamanho) {
-            case 2:
-                horaPadrao = hora.trim() + ':00';
-                break;
-            case 4:
-                horaPadrao = hora.substr(0, 2) + ":" + hora.substr(2);
-                break;
-            case 5:
-                horaPadrao = hora.indexOf(':') === -1 ? false : hora;
-                break;
-            default:
-                horaPadrao = false;
-        }
-        return horaPadrao;
+    //Verificar se existe a hora irá chocar com a cadastrada
+    verificarPeriodoDeHora() {
     }
 }
 exports.HorariosController = HorariosController;
