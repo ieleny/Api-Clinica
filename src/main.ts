@@ -3,17 +3,17 @@ import { HorariosController } from './controller/HorariosController';
 
 const app = express();
 const horariosController = new HorariosController();
- 
-app.post('/cadastrar-horarios', (req,res) => {
+
+app.post('/cadastrar-horarios', (req, res) => {
 
     let response = horariosController.validaCampos(
-                                                    [
-                                                        req.query.dia,
-                                                        req.query.periocidade,
-                                                        req.query.horaInicio,
-                                                        req.query.horaFim
-                                                    ]
-                                                  );
+        [
+            req.query.dia,
+            req.query.periocidade,
+            req.query.horaInicio,
+            req.query.horaFim
+        ]
+    );
 
     res.send(response);
 });
@@ -28,7 +28,7 @@ app.get('/listar-regras-horarios', (request, response) => {
 });
 
 app.post('/listar-horarios-disponiveis', (req, res) => {
-     res.send(horariosController.verificarDataDisponivel(req.query.diaInicio, req.query.DataFim));
+    res.send(horariosController.verificarDataDisponivel(req.query.dataInicio, req.query.dataFim));
 });
- 
-app.listen(8080);
+
+app.listen(8000);

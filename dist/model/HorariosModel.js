@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require("fs");
 class HorariosModel {
     cadastrarHorarios(horarios) {
-        var retorno;
         //Salvar o JSON no arquivo
         fs.writeFile("./file/agenda-horarios.json", horarios, (err) => {
             if (err) {

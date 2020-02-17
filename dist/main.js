@@ -13,13 +13,14 @@ app.post('/cadastrar-horarios', (req, res) => {
     ]);
     res.send(response);
 });
-app.get('/apagar-horarios', (request, response) => {
-    response.send(horariosController.index());
+app.post('/apagar-horarios', (req, res) => {
+    let response = horariosController.apagarHorarios(req.query.id);
+    res.send(response);
 });
 app.get('/listar-regras-horarios', (request, response) => {
     response.send(horariosController.listarHorarios());
 });
-app.get('/listar-horarios-disponiveis', (request, response) => {
-    response.send('Hello world!');
+app.post('/listar-horarios-disponiveis', (req, res) => {
+    res.send(horariosController.verificarDataDisponivel(req.query.dataInicio, req.query.dataFim));
 });
-app.listen(8080);
+app.listen(8000);
