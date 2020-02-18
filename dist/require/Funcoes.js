@@ -1,5 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const dayjs = require("dayjs");
+const utc = require("dayjs/plugin/utc");
+dayjs.extend(utc);
 class Funcoes {
     //Verifica se é uma data valida
     verificarData(data) {
@@ -27,6 +30,23 @@ class Funcoes {
                 horaPadrao = false;
         }
         return horaPadrao;
+    }
+    //Calcular diferença de horas
+    intervaloHoras(data, horaInicio, horaFim) {
+        let data1 = new Date(data + "T" + horaInicio + ":00.000Z");
+        let data2 = new Date(data + "T" + horaFim + ":00.000Z");
+        let diffMs = (data2 - data1);
+        let horasRange = [];
+        //Horas
+        let diffHrs = Math.floor((diffMs % 86400000) / 3600000);
+        let diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000);
+        //Minutos
+        let minutos = Math.round((diffMs % 86400000) / 60000);
+        //Range de Horas
+        for (let i = 0; i <= minutos; i++) {
+            horasRange[i] = dayjs(data1).add(i, 'minute').utc().format('HH:mm');
+        }
+        return horasRange;
     }
 }
 exports.Funcoes = Funcoes;

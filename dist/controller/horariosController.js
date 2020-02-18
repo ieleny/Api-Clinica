@@ -1,13 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const HorariosModel_1 = require("../model/HorariosModel");
+const PeriocidadeController_1 = require("../controller/PeriocidadeController");
 const Funcoes_1 = require("../require/Funcoes");
 const dayjs = require("dayjs");
 class HorariosController {
     constructor() {
         //Model
         this.HorariosModel = new HorariosModel_1.HorariosModel();
+        //Funções
         this.Funcoes = new Funcoes_1.Funcoes();
+        //Controller Periocidade
+        this.PeriocidadeController = new PeriocidadeController_1.PeriocidadeController();
     }
     //Cadastrar Horarios
     cadastrarHorarios(horario) {
@@ -15,13 +19,13 @@ class HorariosController {
         let dados = this.HorariosModel.listarHorarios();
         let object;
         if (dados.length === 0) {
-            object = { 'horarios': [horario] };
+            object = [horario];
         }
         else {
             object = JSON.parse(dados);
-            object.horarios.push(horario);
+            object.push(horario);
         }
-        return this.HorariosModel.cadastrarHorarios(JSON.stringify(object)) ? object.horarios[object.horarios.length - 1] : "Não foi possivel Inserir";
+        return this.HorariosModel.cadastrarHorarios(JSON.stringify(object)) ? object[object.length - 1] : "Não foi possivel Inserir";
     }
     //Apagar os registros
     apagarHorarios(id) {
@@ -29,15 +33,15 @@ class HorariosController {
         let mensagem = { "mensagem": "Não foi encontrado o index requisitado" };
         if (!dados.hasOwnProperty('mensagem')) {
             //Apagar os dados
-            for (let objeto of dados.horarios) {
+            for (let objeto of dados) {
                 if (objeto.id == id) {
                     mensagem = { "mensagem": `O dia ${objeto.dia} foi deletado com sucesso` };
-                    dados.horarios.splice(id, 1);
+                    dados.splice(id, 1);
                 }
             }
             //Organizar o ID
-            for (var _i = 0; _i < dados.horarios.length; _i++) {
-                dados.horarios[_i].id = _i;
+            for (var _i = 0; _i < dados.length; _i++) {
+                dados[_i].id = _i;
             }
         }
         else {
@@ -52,17 +56,22 @@ class HorariosController {
             return { "mensagem": "Não existe horarios cadastrados" };
         }
         else {
-            return JSON.parse(this.HorariosModel.listarHorarios());
+            let dados = JSON.parse(this.HorariosModel.listarHorarios());
+            //Colocar a data com formato brasileiro
+            for (var objeto of dados) {
+                objeto.dia = dayjs(objeto.dia).format("DD-MM-YYYY");
+            }
+            return dados;
         }
     }
     //Quantidade de regas de horas cadastra
-    verificaQuantidadeRegras() {
+    verificaQuantidadeHorarios() {
         let dados = this.listarHorarios();
         if (dados.hasOwnProperty('mensagem')) {
             return 0;
         }
         else {
-            return dados.horarios.length;
+            return dados.length;
         }
     }
     //Retornar Lista de Horarios
@@ -77,8 +86,8 @@ class HorariosController {
                 datasRange[i] = dayjs(this.Funcoes.padronizarData(dataInicio)).add(i, 'day').format("YYYY-MM-DD");
             }
             //verificar se existe em ambos array
-            for (let objeto of dados.horarios) {
-                if (datasRange.findIndex((elemento, index) => elemento === objeto.dia) != -1) {
+            for (let objeto of dados) {
+                if (datasRange.findIndex((elemento, index) => elemento === this.Funcoes.padronizarData(objeto.dia)) != -1) {
                     //Colocar em formato brasileiro  
                     objeto.dia = dayjs(objeto.dia).format("DD-MM-YYYY");
                     //Adicionar no Push
@@ -89,7 +98,7 @@ class HorariosController {
                 return { "mensagem": "Este periodo que está tentando buscar, não existe." };
             }
             else {
-                return periodos.reverse();
+                return periodos;
             }
         }
         else {
@@ -102,28 +111,97 @@ class HorariosController {
         if (this.Funcoes.verificarData(campos[0]) === false) {
             return { "erro": "Data invalida, Modelo a ser utilizado .: 12-06-2020 " };
         }
-        if (this.Funcoes.verificarHora(campos[2]) === false) {
-            return { "erro": "A hora Inicio está inválida. Modelo a ser utilizado .: 15:30" };
+        //Verificar se a hora inicio é maior que a hora fim
+        if (this.Funcoes.verificarHora(campos[2]) > this.Funcoes.verificarHora(campos[3])) {
+            return { "erro": "A hora inicio está maior que a hora fim" };
         }
-        else if (this.Funcoes.verificarHora(campos[3]) === false) {
-            return { "erro": "A hora Fim está inválida. Modelo a ser utilizado .: 15:30" };
+        let teste = this.montarJson(campos);
+        return teste;
+        //let periocidade = this.PeriocidadeController.verificarPeriocidade(campos[1], campos);
+        //Verificar se a data está no formato correto
+        // if (this.Funcoes.verificarHora(campos[2]) === false) {
+        //   return { "erro": "A hora Inicio está inválida. Modelo a ser utilizado .: 15:30" };
+        // } else if (this.Funcoes.verificarHora(campos[3]) === false) {
+        //   return { "erro": "A hora Fim está inválida. Modelo a ser utilizado .: 15:30" };
+        // } else if (typeof this.Funcoes.verificarHora(campos[3]) == "string" && typeof this.Funcoes.verificarHora(campos[3]) == "string") {
+        //   return this.verificarPeriodoDeHora(campos);
+        // }
+    }
+    montarJson(campos) {
+        let horarios;
+        let dados;
+        //Verificar qual a periocidade
+        if (campos[1] == '1') {
+            return campos = campos;
         }
-        else if (typeof this.Funcoes.verificarHora(campos[3]) == "string" && typeof this.Funcoes.verificarHora(campos[3]) == "string") {
+        else if (campos[1] == '2') {
+            horarios = this.PeriocidadeController.periocidadeDiariamente(campos);
+            dados = {
+                "id": this.verificaQuantidadeHorarios(),
+                "dia": this.Funcoes.padronizarData(campos[0]),
+                "periocidade": campos[1],
+                "hora": []
+            };
+            console.log(horarios.length);
+            // if (horarios.length != 0) {
+            //   for (let retorno of horarios) {
+            //     dados.hora.push({
+            //       "inicio": this.Funcoes.verificarHora(retorno.inicio),
+            //       "fim": this.Funcoes.verificarHora(retorno.fim)
+            //     });
+            //   }
+            // }
+            console.log(horarios);
+            return dados;
+        }
+        else if (campos[1] == '3') {
+        }
+    }
+    //Verificar se existe a hora, e se irá chocar com a já cadastrada
+    verificarPeriodoDeHora(campos) {
+        let dados = this.listarHorarios();
+        let data = -1, mensagem;
+        let rangeHora;
+        // Só verifica o index, se existir horarios dentro do arquivo json
+        if (this.verificaQuantidadeHorarios() > 0) {
+            data = dados.findIndex((elemento, index) => this.Funcoes.padronizarData(elemento.dia) == this.Funcoes.padronizarData(campos[0]));
+        }
+        //verificar se a hora existe
+        if (data > -1) {
+            //Fazer o range de Hora
+            rangeHora = this.Funcoes.intervaloHoras(this.Funcoes.padronizarData(campos[0]), this.Funcoes.verificarHora(campos[2]), this.Funcoes.verificarHora(campos[3]));
+            //Precisar encontrar na data esse index
+            //Verificar Hora Inicio e Fim
+            for (let i = 0; this.verificaQuantidadeHorarios() > i; i++) {
+                for (let j = 0; dados[i].hora.length > j; j++) {
+                    if (rangeHora.findIndex((elemento, index) => this.Funcoes.padronizarData(dados[i].dia) == this.Funcoes.padronizarData(campos[0]) && dados[i].hora[j].inicio <= elemento && elemento <= dados[i].hora[j].fim) === -1) {
+                        dados[i].hora.push({
+                            "inicio": this.Funcoes.verificarHora(campos[2]),
+                            "fim": this.Funcoes.verificarHora(campos[3])
+                        });
+                        return this.HorariosModel.cadastrarHorarios(JSON.stringify(dados)) ? dados[dados.length - 1] : "Não foi possivel Inserir";
+                    }
+                    else {
+                        mensagem = { "Erro": "Já existe esse periodo cadastrado nessa data" };
+                    }
+                }
+            }
+        }
+        else {
             return this.cadastrarHorarios({
-                "id": this.verificaQuantidadeRegras(),
+                "id": this.verificaQuantidadeHorarios(),
                 "dia": this.Funcoes.padronizarData(campos[0]),
                 "periocidade": campos[1],
                 "hora": [
                     {
                         "inicio": this.Funcoes.verificarHora(campos[2]),
-                        "Fim": this.Funcoes.verificarHora(campos[3])
+                        "fim": this.Funcoes.verificarHora(campos[3])
                     }
                 ]
             });
         }
-    }
-    //Verificar se existe a hora irá chocar com a cadastrada
-    verificarPeriodoDeHora() {
+        rangeHora = [];
+        return mensagem;
     }
 }
 exports.HorariosController = HorariosController;
