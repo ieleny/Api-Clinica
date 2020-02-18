@@ -31,4 +31,4 @@ app.post('/listar-horarios-disponiveis', (req, res) => {
     res.send(horariosController.verificarDataDisponivel(req.query.dataInicio, req.query.dataFim));
 });
 
-app.listen(8000);
+app.listen(8080);
