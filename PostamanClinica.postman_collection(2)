@@ -1,0 +1,190 @@
+{
+	"variables": [],
+	"info": {
+		"name": "PostamanClinica",
+		"_postman_id": "0aa635cd-2e68-625c-798c-5d5c6d204cef",
+		"description": "Requisições da Clinica\n",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/cadastrar-horarios/?data=20&id=2345&periocidade=1",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8000/cadastrar-horarios/?dia=12-06-2028&horaInicio=22:50&horaFim=22:54&periocidade=3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"cadastrar-horarios",
+						""
+					],
+					"query": [
+						{
+							"key": "dia",
+							"value": "12-06-2028",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "horaInicio",
+							"value": "22:50",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "horaFim",
+							"value": "22:54",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "periocidade",
+							"value": "3",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "data",
+							"value": "123",
+							"description": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Inserção do Horario"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/listar-regras-horarios",
+			"request": {
+				"url": "http://localhost:8000/listar-regras-horarios",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Listar Regras cadastradas no Banco"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/apagar-horarios?id=1",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8000/apagar-horarios?id=0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"apagar-horarios"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "0",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"description": "Apagar os registro de acordo com o id"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/listar-horarios-disponiveis",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8000/listar-horarios-disponiveis?dataInicio=12-12-2022&dataFim=12-12-2024",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"listar-horarios-disponiveis"
+					],
+					"query": [
+						{
+							"key": "dataInicio",
+							"value": "12-12-2022",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "dataFim",
+							"value": "12-12-2024",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"description": "Listar Horarios Disponiveis"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/listar-horarios-disponiveis?dataInicio=01-01-2020&dataFim=20-12-2020",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8000/listar-horarios-disponiveis?dataInicio=01-01-2020&dataFim=20-12-2020",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"listar-horarios-disponiveis"
+					],
+					"query": [
+						{
+							"key": "dataInicio",
+							"value": "01-01-2020",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "dataFim",
+							"value": "20-12-2020",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"description": "Listar Horarios Disponiveis"
+			},
+			"response": []
+		}
+	]
+}
