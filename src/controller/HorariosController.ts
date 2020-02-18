@@ -17,7 +17,7 @@ export class HorariosController {
     let object;
 
     if (dados.length === 0) {
-        object = { 'horarios': [horario] };
+        object = { horario };
     } else {
         object = JSON.parse(dados);
         object.horarios.push(horario);
@@ -159,16 +159,17 @@ export class HorariosController {
   verificarPeriodoDeHora(campos: Array<string>) {
 
     let dados = this.listarHorarios();
-    let data: number, rangeHora : Array<string>; 
+    let data: number = -1 , rangeHora : Array<string>; 
     
     // Só verifica o index, se existir horarios dentro do arquivo json
     if(this.verificaQuantidadeHorarios() > 0){
         data = dados.findIndex((elemento, index) => elemento.dia == campos[0]);
     }
     
-    
     //verificar se a hora existe
     if ( data != -1) {
+
+        //Erro aqui
         
         //Fazer o range de Hora
         rangeHora = this.Funcoes.intervaloHoras(
@@ -185,10 +186,10 @@ export class HorariosController {
                     
                     //Está dando erro aqui
                     //Salvar os dados dentro do campo hora
-                    dados[data].hora[j] =   {
+                    dados[data].hora.push({
                                                     "inicio": this.Funcoes.verificarHora(campos[2]),
                                                     "fim": this.Funcoes.verificarHora(campos[3])
-                                            }
+                                            });
                                             
 
                     return this.HorariosModel.cadastrarHorarios(JSON.stringify(dados));
