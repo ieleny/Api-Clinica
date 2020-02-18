@@ -36,37 +36,4 @@ export class PeriocidadeController {
         return this.PeriocidadeModel.listarPeriocidade();
     }
 
-
-    // verificarPeriocidade(id_periocidade: string, campos: Array<string>) {
-
-    //     let datasRange = [];
-
-    //     if (id_periocidade == '1') {
-    //         return campos;
-    //     } else if (id_periocidade == '2') {
-    //         return this.cadastroPeriocidade(
-    //             {
-    //                 "diariamente":
-    //                     [
-    //                         {
-    //                             "inicio": this.Funcoes.verificarHora(campos[2]),
-    //                             "fim": this.Funcoes.verificarHora(campos[3])
-    //                         }
-    //                     ]
-    //             });
-
-    //     } else if (id_periocidade == '3') {
-
-    //         //Criar um range de datas
-    //         for (let i = 0; i < 7; i++) {
-    //             datasRange[i] = dayjs(this.Funcoes.padronizarData(campos[0])).add(i, 'day').format("YYYY-MM-DD");
-    //         }
-
-    //         return datasRange;
-
-    //     }
-    // }
-
-
-
 }

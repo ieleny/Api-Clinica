@@ -148,23 +148,19 @@ export class HorariosController {
       return { "erro": "A hora inicio está maior que a hora fim" };
     }
 
-    let teste = this.montarJson(campos);
-    return teste;
-
-    //let periocidade = this.PeriocidadeController.verificarPeriocidade(campos[1], campos);
-
     //Verificar se a data está no formato correto
-    // if (this.Funcoes.verificarHora(campos[2]) === false) {
-    //   return { "erro": "A hora Inicio está inválida. Modelo a ser utilizado .: 15:30" };
-    // } else if (this.Funcoes.verificarHora(campos[3]) === false) {
-    //   return { "erro": "A hora Fim está inválida. Modelo a ser utilizado .: 15:30" };
-    // } else if (typeof this.Funcoes.verificarHora(campos[3]) == "string" && typeof this.Funcoes.verificarHora(campos[3]) == "string") {
-    //   return this.verificarPeriodoDeHora(campos);
-    // }
+    if (this.Funcoes.verificarHora(campos[2]) === false) {
+      return { "erro": "A hora Inicio está inválida. Modelo a ser utilizado .: 15:30" };
+    } else if (this.Funcoes.verificarHora(campos[3]) === false) {
+      return { "erro": "A hora Fim está inválida. Modelo a ser utilizado .: 15:30" };
+    } else if (typeof this.Funcoes.verificarHora(campos[3]) == "string" && typeof this.Funcoes.verificarHora(campos[3]) == "string") {
+      return this.montarJson(campos);
+    }
 
 
   }
 
+  //Montar o Objeto para Salvar no Arquivo
   montarJson(campos: Array<string>) {
 
     let horarios;
@@ -177,16 +173,28 @@ export class HorariosController {
 
     //Verificar qual a periocidade
     if (campos[1] == '1') {
-      return campos = campos;
+      return this.cadastrarHorarios({
+        "id": this.verificaQuantidadeHorarios(),
+        "dia": this.Funcoes.padronizarData(campos[0]),
+        "periocidade": campos[1],
+        "hora": [{
+          "inicio": this.Funcoes.verificarHora(campos[2]),
+          "fim": this.Funcoes.verificarHora(campos[3])
+        }]
+      });
     } else if (campos[1] == '2') {
 
       horarios = this.PeriocidadeController.periocidadeDiariamente(campos);
 
       if (horarios.length != 0) {
+
         dados[0].hora.push({
           "inicio": this.Funcoes.verificarHora(horarios[0]),
           "fim": this.Funcoes.verificarHora(horarios[1])
         });
+
+        this.cadastrarHorarios(dados);
+
       }
 
       return dados;
@@ -195,27 +203,88 @@ export class HorariosController {
 
       horarios = this.PeriocidadeController.periocidadeSemana(campos);
 
-      for (let diaSemana of horarios) {
-        dados.push({
-          "id": this.verificaQuantidadeHorarios(),
-          "dia": this.Funcoes.padronizarData(campos[0]),
-          "periocidade": campos[1],
-          "hora": [{
-            "inicio": this.Funcoes.verificarHora(campos[2]),
-            "fim": this.Funcoes.verificarHora(campos[3])
-          }]
-        });
-      }
+      // horarios.forEach((item, index) => {
 
-      return dados;
+      //   dados.push(
+      //     {
+      //       "id": this.verificaQuantidadeHorarios() + index,
+      //       "dia": item,
+      //       "periocidade": campos[1],
+      //       "hora": [{
+      //         "inicio": this.Funcoes.verificarHora(campos[2]),
+      //         "fim": this.Funcoes.verificarHora(campos[3])
+      //       }]
+      //     }
+      //   );
+
+      // });
+
+      return this.cadastrarHorariosSemanalmente(horarios, campos);
 
     }
 
   }
 
-  //Verificar se existe a hora, e se irá chocar com a já cadastrada
-  verificarPeriodoDeHora(campos: Array<string>) {
+  cadastrarHorariosSemanalmente(horarios: Array<object>, campos): object {
 
+    //Ler o Arquivo, e salvar os dados anterior
+    let dados = this.HorariosModel.listarHorarios();
+    let object = [];
+    let listar = [];
+
+    if (dados.length === 0) {
+
+      horarios.forEach((item, index) => {
+
+        object.push(
+          {
+            "id": this.verificaQuantidadeHorarios() + index,
+            "dia": this.Funcoes.padronizarData(item.toString()),
+            "periocidade": campos[1],
+            "hora": [{
+              "inicio": this.Funcoes.verificarHora(campos[2]),
+              "fim": this.Funcoes.verificarHora(campos[3])
+            }]
+          }
+        );
+
+        listar.push(object[index]);
+
+      });
+
+    } else {
+
+      object = JSON.parse(dados);
+
+      horarios.forEach((item, index) => {
+
+        object.push(
+          {
+            "id": this.verificaQuantidadeHorarios() + index,
+            "dia": this.Funcoes.padronizarData(item.toString()),
+            "periocidade": campos[1],
+            "hora": [{
+              "inicio": this.Funcoes.verificarHora(campos[2]),
+              "fim": this.Funcoes.verificarHora(campos[3])
+            }]
+          }
+        );
+
+        listar.push(object[index]);
+
+      });
+
+    }
+
+    this.HorariosModel.cadastrarHorarios(JSON.stringify(object));
+
+    return object;
+
+  }
+
+  //Verificar se existe a hora, e se irá chocar com a já cadastrada
+  //Tentei fazer mais não deu tempo
+  verificarPeriodoDeHora(campos: object) {
     let dados = this.listarHorarios();
     let data = -1, mensagem;
     let rangeHora: Array<string>;
@@ -280,7 +349,6 @@ export class HorariosController {
 
     rangeHora = [];
     return mensagem;
-
   }
 
 
