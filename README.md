@@ -21,7 +21,7 @@ Para que seja feita a periocidade tem 3 tipos de id:</br>
 3 - Semanalmente</br>
 
 # Porta
-Foi configurada na porta 8000, caso haja algum conflito modificar no seguinte caminho src/main.js
+Foi configurada na porta 8000, caso haja algum conflito modificar no seguinte caminho src/main.ts
 
 # Rotas
 # Cadastrar
