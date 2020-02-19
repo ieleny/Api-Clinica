@@ -25,9 +25,9 @@ Foi configurada na porta 8000, caso haja algum conflito modificar no seguinte ca
 
 # Rotas
 # Cadastrar
-http://localhost:8000/cadastrar-horarios/?dia=12-06-2020&horaInicio=14:46&horaFim=14:56&periocidade=1
-http://localhost:8000/cadastrar-horarios/?dia=12-06-2020&horaInicio=14:46&horaFim=14:56&periocidade=2
-http://localhost:8000/cadastrar-horarios/?dia=12-06-2020&horaInicio=14:46&horaFim=14:56&periocidade=3
+http://localhost:8000/cadastrar-horarios/?dia=12-06-2020&horaInicio=15:46&horaFim=15:56&periocidade=1
+http://localhost:8000/cadastrar-horarios/?dia=13-06-2020&horaInicio=16:46&horaFim=17:30&periocidade=2
+http://localhost:8000/cadastrar-horarios/?dia=14-06-2020&horaInicio=17:46&horaFim=18:30&periocidade=3
 # Listar Regras
 http://localhost:8000/listar-regras-horarios
 # Apagar Regras
