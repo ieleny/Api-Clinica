@@ -11,7 +11,7 @@ tslint(É uma ferramenta de análise de código para alertá-lo sobre possíveis
 dayJS</br>
 
 # Executar 
-Primeiro é preciso executar o <strong>npm install</strong>, para instalar as dependencia. E para executar o projeto execute 
+Primeiro é preciso executar o <strong>npm install</strong> para instalar as dependencias. E para executar o projeto execute 
 <strong>npm run dev</strong>
 
 # Detalhes do Projeto
