@@ -3,22 +3,22 @@ Api feita em Typescript
 
 # Pacotes Utilizados
 typescript</br>
-gulp
-gulp-typescript
-express
-node
-tslint(É uma ferramenta de análise de código para alertá-lo sobre possíveis problemas no seu código, além dos problemas de sintaxe )
-dayJS
+gulp</br>
+gulp-typescript</br>
+express</br>
+node</br>
+tslint(É uma ferramenta de análise de código para alertá-lo sobre possíveis problemas no seu código, além dos problemas de sintaxe )</br>
+dayJS</br>
 
 # Executar 
-Primeiro é preciso executar o "npm install", para instalar as dependencia. E para executar o projeto execute 
-"npm run dev"
+Primeiro é preciso executar o *npm install*, para instalar as dependencia. E para executar o projeto execute 
+*npm run dev*
 
 # Detalhes do Projeto
-Para que seja feita a periocidade tem 3 tipos de id:
-1 - Do dia
-2 - Diariamente
-3 - Semanalmente
+Para que seja feita a periocidade tem 3 tipos de id:</br>
+1 - Do dia</br>
+2 - Diariamente</br>
+3 - Semanalmente</br>
 
 # Porta
 Foi configurada na porta 8000, caso haja algum conflito modificar no seguinte caminho src/main.js
