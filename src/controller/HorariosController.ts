@@ -239,7 +239,7 @@ export class HorariosController {
         object.push(
           {
             "id": this.verificaQuantidadeHorarios() + index,
-            "dia": this.Funcoes.padronizarData(item.toString()),
+            "dia": item.toString(),
             "periocidade": campos[1],
             "hora": [{
               "inicio": this.Funcoes.verificarHora(campos[2]),
@@ -261,7 +261,7 @@ export class HorariosController {
         object.push(
           {
             "id": this.verificaQuantidadeHorarios() + index,
-            "dia": this.Funcoes.padronizarData(item.toString()),
+            "dia": item.toString(),
             "periocidade": campos[1],
             "hora": [{
               "inicio": this.Funcoes.verificarHora(campos[2]),
