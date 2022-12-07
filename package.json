@@ -20,9 +20,9 @@
     "typescript": "^2.9.2"
   },
   "dependencies": {
-    "body-parser": "^1.19.0",
+    "body-parser": "^1.20.1",
     "dayjs": "^1.8.20",
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "gulp": "^4.0.2",
     "gulp-typescript": "^6.0.0-alpha.1"
   }
